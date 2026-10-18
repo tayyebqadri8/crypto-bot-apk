@@ -6,6 +6,7 @@ requires-python = ">=3.12,<3.14"
 dependencies = [
     "flet>=0.28.0",
     "ccxt>=4.4.0",
+    "wsgiref",
 ]
 
 [tool.flet]
@@ -17,4 +18,3 @@ company = "QuantBot"
 "android.permission.INTERNET" = true
 "android.permission.WAKE_LOCK" = true
 "android.permission.POST_NOTIFICATIONS" = true
-
