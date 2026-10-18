@@ -13,7 +13,13 @@ org = "com.tradingbot"
 product = "Binance Multi-Bot Pro"
 company = "QuantBot"
 
+[tool.flet.android]
+dependencies = [
+    "pyjnius"
+]
+
 [tool.flet.android.permission]
 "android.permission.INTERNET" = true
 "android.permission.WAKE_LOCK" = true
 "android.permission.POST_NOTIFICATIONS" = true
+
