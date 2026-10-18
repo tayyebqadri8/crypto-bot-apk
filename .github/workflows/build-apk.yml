@@ -38,7 +38,7 @@ jobs:
 
       - name: Install Flet & Build APK
         run: |
-          pip install "flet[all]"
+          pip install --upgrade flet
           flet clean
           flet build apk --yes --verbose
 
