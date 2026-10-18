@@ -17,4 +17,3 @@ company = "QuantBot"
 "android.permission.INTERNET" = true
 "android.permission.WAKE_LOCK" = true
 "android.permission.POST_NOTIFICATIONS" = true
-
