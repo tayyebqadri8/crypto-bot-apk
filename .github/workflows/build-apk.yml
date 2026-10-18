@@ -28,7 +28,7 @@ jobs:
       - name: Install Linux dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libbz2-dev liblzma-dev mesa-utils xvfb
+          sudo apt-get install -y libgtk-3-dev libbz2-dev liblzma-dev mesa-utils
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -42,7 +42,7 @@ jobs:
       - name: Install Flet & Build APK
         run: |
           pip install "flet[all]"
-          xvfb-run flet build apk --yes --verbose
+          flet build apk --yes --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
