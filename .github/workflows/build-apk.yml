@@ -3,50 +3,26 @@ name: Build Crypto Bot APK
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
-
-env:
-  ANDROID_HOME: /usr/local/lib/android/sdk
+    branches: [main]
 
 jobs:
-  build-android-apk:
+  build-apk:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Build APK
+        id: build
+        uses: flet-dev/flet-build-action@v1
         with:
-          python-version: '3.12'
+          target: apk
+          runner-python-version: "3.12"
+          bundled-python-version: "3.12"
+          build-number: ${{ github.run_number }}
 
-      - name: Set up Java JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install Linux dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libbz2-dev liblzma-dev mesa-utils
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - name: Accept Android licenses
-        run: |
-          yes | flutter doctor --android-licenses
-
-      - name: Install Flet & Build APK
-        run: |
-          pip install "flet[all]"
-          flet clean
-          flet build apk --yes --verbose
-
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Binance-MultiBot-Pro-APK
-          path: build/apk/*.apk
+          path: ${{ steps.build.outputs.archive-path }}
+          if-no-files-found: error
