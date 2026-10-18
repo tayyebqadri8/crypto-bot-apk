@@ -43,7 +43,7 @@ jobs:
         run: |
           pip install "flet[all]"
           flet clean
-          flet build apk --yes --verbose --flutter-verbose
+          flet build apk --yes --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
