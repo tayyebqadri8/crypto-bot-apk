@@ -5,7 +5,6 @@ description = "Binance Pro Multi-Bot Crypto Trading Suite"
 dependencies = [
     "flet>=0.28.0",
     "ccxt>=4.4.0",
-    "pyjnius",
     "android-notify"
 ]
 
