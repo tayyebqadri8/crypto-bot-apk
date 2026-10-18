@@ -1,75 +1,52 @@
-- name: Setup Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: "3.12"
+name: Build Crypto Bot APK
 
-  - name: Setup Java JDK 17
-    uses: actions/setup-java@v4
-    with:
-      distribution: temurin
-      java-version: "17"
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
 
-  - name: Install Linux dependencies
-    shell: bash
-    run: |
-      sudo apt update --allow-releaseinfo-change
-      sudo apt-get install -y --no-install-recommends \
-        clang ninja-build libgtk-3-dev libasound2-dev libmpv-dev mpv \
-        libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-        libgstreamer-plugins-bad1.0-dev libgstreamer-plugins-good1.0-dev \
-        libgstreamer-plugins-ugly1.0-dev gstreamer1.0-plugins-base \
-        gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
-        gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools \
-        gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 \
-        gstreamer1.0-qt5 gstreamer1.0-pulseaudio pkg-config \
-        libsecret-1-0 libsecret-1-dev
-      sudo apt-get clean
+env:
+  ANDROID_HOME: /usr/local/lib/android/sdk
 
-  - name: Setup Flutter
-    uses: subosito/flutter-action@v2
-    with:
-      flutter-version: "3.44.8"
-      channel: stable
-      cache: true
+jobs:
+  build-android-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Accept Android licenses
-    shell: bash
-    run: |
-      yes | sdkmanager --licenses || true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-  - name: Install Flet & Build APK
-    shell: bash
-    run: |
-      pip install "flet "
-      flet build apk --yes --verbose --flutter-verbose
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-  - name: Upload APK Artifact
-    uses: actions/upload-artifact@v4
-    with:
-      name: apk
-      path: build/apk
-      if-no-files-found: error
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libbz2-dev liblzma-dev mesa-utils
 
-  - name: Post Setup Flutter
-    if: always()
-    shell: bash
-    run: |
-      flutter --version || true
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
 
-  - name: Post Setup Java JDK 17
-    if: always()
-    shell: bash
-    run: |
-      java -version || true
+      - name: Accept Android licenses
+        run: |
+          yes | flutter doctor --android-licenses
 
-  - name: Post Setup Python
-    if: always()
-    shell: bash
-    run: |
-      python --version || true
+      - name: Install Flet & Build APK
+        run: |
+          pip install "flet[all]"
+          flet clean
+          flet build apk --yes --verbose --flutter-verbose
 
-  - name: Post Run actions/checkout@v4
-    if: always()
-    shell: bash
-    run: |
-      echo "Checkout completed"
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Binance-MultiBot-Pro-APK
+          path: build/apk/*.apk
