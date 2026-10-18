@@ -42,7 +42,7 @@ jobs:
       - name: Install Flet & Build APK
         run: |
           pip install "flet[all]"
-          xvfb-run flet build apk --yes
+          xvfb-run flet build apk --yes --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
