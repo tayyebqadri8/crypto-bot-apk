@@ -4,7 +4,7 @@ version = "2.0.0"
 description = "Binance Pro Multi-Bot Crypto Trading Suite"
 dependencies = [
     "flet>=0.28.0",
-    "ccxt>=4.4.0",
+    "ccxt>=4.4.0"
 ]
 
 [tool.flet]
@@ -12,13 +12,7 @@ org = "com.tradingbot"
 product = "Binance Multi-Bot Pro"
 company = "QuantBot"
 
-[tool.flet.android]
-dependencies = [
-    "pyjnius"
-]
-
 [tool.flet.android.permission]
 "android.permission.INTERNET" = true
 "android.permission.WAKE_LOCK" = true
 "android.permission.POST_NOTIFICATIONS" = true
-
