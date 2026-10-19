@@ -1,13 +1,23 @@
 import sys
 from types import ModuleType
 
-# Android Python environment compatibility fix for ccxt wsgiref issue
-if "wsgiref" not in sys.modules:
+import sys
+from types import ModuleType
+
+# Robust wsgiref mock
+def mock_wsgiref():
     wsgiref_mock = ModuleType("wsgiref")
     sys.modules["wsgiref"] = wsgiref_mock
     sys.modules["wsgiref.handlers"] = ModuleType("wsgiref.handlers")
     sys.modules["wsgiref.util"] = ModuleType("wsgiref.util")
-    sys.modules["wsgiref.headers"] = ModuleType("wsgiref.headers")
+    sys.modules["wsgiref.simple_server"] = ModuleType("wsgiref.simple_server")
+
+    for mod in ["handlers", "util", "simple_server"]:
+        name = f"wsgiref.{mod}"
+        sys.modules[name].__path__ = []
+
+mock_wsgiref()
+
 
 import threading
 import time
